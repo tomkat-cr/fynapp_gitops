@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  fynapp_frontend:
+    container_name: fynapp_frontend
+    image: mediabros/fynapp_frontend:v${APP_VERSION}-amd64
+    # platform: linux/x86_64
+    ports:
+      - 3001:3001
+    expose:
+      - 3001
+    environment:
+      # - REACT_APP_API_URL=http://fynapp_backend:5000
+      - REACT_APP_API_URL=$FYNAPP_REACT_APP_API_URL
+    networks:
+      - backend
+
+  fynapp_backend:
+    container_name: fynapp_backend
+    image: mediabros/fynapp_backend:v${APP_VERSION}-amd64
+    # platform: linux/x86_64
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
+    environment:
+      - FLASK_APP=fynapp_api
+      - FLASK_ENV=fynapp_api
+      - FLASK_DEBUG=0
+      - FYNAPP_DB_NAME=fynapp_dev
+      - FYNAPP_DB_URI=$FYNAPP_DB_URI
+      - FYNAPP_SECRET_KEY=$FYNAPP_SECRET_KEY
+    networks:
+      - backend
+
+networks:
+  backend:
