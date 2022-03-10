@@ -1,4 +1,5 @@
 # File: k8/deployment.yml
+# Two containers in two Services. This is more appropiate for cases where each container needs their own public port number.
 # 2022-02-25 | CR
 
 ---
