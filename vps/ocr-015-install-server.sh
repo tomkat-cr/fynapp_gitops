@@ -1,6 +1,7 @@
 #!/bin/bash
 # File: fynapp_gitops/vps/ocr-015-install-server.sh
 # Generar llave privada de acceso al servidor.
+# IMPORTANTE: Este script se debe ejecutar desde su PC local, no en el Server.
 # 2022-03-07 | CR
 
 createKey=1;

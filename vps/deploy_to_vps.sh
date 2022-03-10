@@ -1,5 +1,8 @@
 #!/bin/bash
 # "fynapp_gitops/vps/deploy_to_vps.sh"
+# 2022-03-07 | CR
+# Deploy both FE/BE containers to the VPS. BTW they would be better be deploy separately.
+# Check 'vps/deploy_to_vps.sh' on each of them repo.
 #
 CURRENT_DIR="`dirname "$0"`"
 cd "${CURRENT_DIR}" ;
@@ -35,7 +38,7 @@ if [ "$6" != "" ]; then
 fi
 
 # Variables
-SSH_CMD="ssh -p ${VPS_PORT} -i ${LOCAL_PRIVATE_KEY_PATH}"
+SSH_CMD="ssh -p ${VPS_PORT} -i ${LOCAL_PRIVATE_KEY_PATH} -oStrictHostKeyChecking=no"
 
 # Generate .env
 if [ -f "${CURRENT_DIR}/../k8/.env" ]; then
@@ -54,3 +57,9 @@ rsync -arv -e "${SSH_CMD}" ./* ${VPS_USER}@${VPS_NAME}:${VPS_DIRECTORY}/
 # Restart the containers on thee VPS
 ${SSH_CMD} ${VPS_USER}@${VPS_NAME} "sh -x ${VPS_DIRECTORY}/run-server-containers.sh down"
 ${SSH_CMD} ${VPS_USER}@${VPS_NAME} "sh -x ${VPS_DIRECTORY}/run-server-containers.sh"
+
+# Clean up
+if [ -f version.txt ]; then
+    rm version.txt
+fi
+rm .env

@@ -1,46 +1,13 @@
 #!/bin/bash
-# ocr-010-install-server.sh
-# 
-# https://unix.stackexchange.com/questions/6345/how-can-i-get-distribution-name-and-version-number-in-a-simple-shell-script
-# To get OS and VER, the latest standard seems to be /etc/os-release. 
-# Before that, there was lsb_release and /etc/lsb-release. 
-# Before that, you had to look for different files for each distribution.
-# Here's what I'd suggest
+# File: "fynapp_gitops/scripts/get_os_name_type.sh"
+# Creacion del usuario ubuntu/centos/ocrusr, grupo ocrgroup, aregarlo al grupo de los sudoers y al grupo docker.
+# IMPORTANTE: Este script se debe ejecutar en el Server.
+# 2022-03-09 | CR
 
-if [ -f /etc/os-release ]; then
-    # freedesktop.org and systemd
-    . /etc/os-release
-    OS=$NAME
-    VER=$VERSION_ID
-	if [ "$OS" = "CentOS Linux" ]; then
-		if [ "$ID" != "" ]; then
-            OS=$ID
-		fi
-	fi
-elif type lsb_release >/dev/null 2>&1; then
-    # linuxbase.org
-    OS=$(lsb_release -si)
-    VER=$(lsb_release -sr)
-elif [ -f /etc/lsb-release ]; then
-    # For some versions of Debian/Ubuntu without lsb_release command
-    . /etc/lsb-release
-    OS=$DISTRIB_ID
-    VER=$DISTRIB_RELEASE
-elif [ -f /etc/debian_version ]; then
-    # Older Debian/Ubuntu/etc.
-    OS=Debian
-    VER=$(cat /etc/debian_version)
-elif [ -f /etc/SuSe-release ]; then
-    # Older SuSE/etc.
-    ...
-elif [ -f /etc/redhat-release ]; then
-    # Older Red Hat, CentOS, etc.
-    ...
-else
-    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-    OS=$(uname -s)
-    VER=$(uname -r)
-fi
+# Get the distro name and type
+. "../scripts/get_os_name_type.sh" ;
+OS=$OS_NAME ;
+VER=$OS_VERSION ;
 
 echo "";
 echo "CREACION DEL USUARIO PRINCIPAL CON BASE EN LA DISTRO ACTUAL";
