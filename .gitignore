@@ -2,3 +2,5 @@
 .env
 ./scripts/.env
 ./k8/.env
+./.idea
+
