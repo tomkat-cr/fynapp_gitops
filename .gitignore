@@ -1,0 +1,6 @@
+# .env files
+.env
+./scripts/.env
+./k8/.env
+./.idea
+
